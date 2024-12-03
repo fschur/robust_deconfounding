@@ -26,7 +26,6 @@ pip install -r requirements.txt
 ``` 
 
 ## Usage
-The following code snippet demonstrates the core functionality of the meta-learners provided in this repository. 
 The code in **demo.ipynb** demonstrates the core functionality of the DecoR provided in this repository.
 
 
