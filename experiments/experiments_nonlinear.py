@@ -18,7 +18,7 @@ Short explanation of the variables and what they do:
 "reflected_ou" : X_t is a reflected Ornstein-Uhlenbeck process
 """
 
-exp="uniform"     # "uniform" | "reflected_ou"
+exp="reflected_ou"     # "uniform" | "reflected_ou"
 
 # ----------------------------------
 # Set up and pepare Monte Carlo simluation
