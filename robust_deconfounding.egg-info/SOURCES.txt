@@ -5,6 +5,8 @@ experiments/__init__.py
 experiments/experiments.py
 experiments/experiments_ablation.py
 experiments/experiments_nonlinear.py
+experiments/ozone.py
+experiments/plot_nonlinear.py
 experiments/precipitation_experiment.py
 experiments/process_precipitation_data.py
 experiments/synthetic_data.py
