@@ -305,7 +305,7 @@ class UniformNonlinearDataGenerator(BaseDataGenerator):
 
         y = functions_nonlinear(x, self.beta[0]) + ey + 10*k
 
-        return x[:,0], y[:,0], 10*k[:,0]
+        return x[:,0], y[:,0]
   
     
 class OUReflectedNonlinearDataGenerator(OUDataGenerator):
@@ -337,7 +337,7 @@ class OUReflectedNonlinearDataGenerator(OUDataGenerator):
 
         y = functions_nonlinear(x, self.beta[0]) + ey + 10*k
 
-        return  x[:,0], y[:,0], 10*k[:,0]
+        return  x[:,0], y[:,0]
     
     def reflect(self, x:NDArray)->NDArray:
         """

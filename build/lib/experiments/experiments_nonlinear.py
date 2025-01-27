@@ -1,17 +1,12 @@
-#Here come the nonlinear experiments
-
 import numpy as np
-import random, pickle, json
+import random, pickle, json, os
 from pygam import LinearGAM, s
 
-import sys
-sys.path.insert(0, '/mnt/c/Users/piobl/Documents/msc_applied_mathematics/4_semester/master_thesis/code/master_thesis')
-from utils_nonlinear import get_results, get_data
+from utils_experiments import get_results, get_data
 from synthetic_data import functions_nonlinear
 from robust_deconfounding.utils import get_funcbasis
 
 """
-We run experiments.py 
 The experiments can take up to an hour, therefore the results are saved in the folder "results".
 The configuration for the different experiments discussed in the paper are saved in the config.json file and can be chosen throught the "exp" variable.
 New experiments can be run by simply extending the config.json file.
@@ -22,11 +17,7 @@ Short explanation of the variables and what they do:
 "reflected_ou" : X_t is a reflected Ornstein-Uhlenbeck process
 """
 
-#Select the experiment
 exp="uniform"     # "uniform" | "reflected_ou"
-
-path="/mnt/c/Users/piobl/Documents/msc_applied_mathematics/4_semester/master_thesis/results/"   #Path to save files
-path_config="/mnt/c/Users/piobl/Documents/msc_applied_mathematics/4_semester/master_thesis/code/master_thesis/experiments/" #Path for the json file where experiment configurations are defined.
 
 # ----------------------------------
 # Set up and pepare Monte Carlo simluation
@@ -35,6 +26,9 @@ path_config="/mnt/c/Users/piobl/Documents/msc_applied_mathematics/4_semester/mas
 SEED = 1
 np.random.seed(SEED)
 random.seed(SEED)
+
+path_results=os.path.join(os.path.dirname(__file__), "results/")        #Path to the results
+path_config = os.path.join(os.path.dirname(__file__), "config.json")    #Path for the json file where experiment configurations are defined.
 
 with open(path_config+'config.json', 'r') as file:
     config = json.load(file)
@@ -47,7 +41,7 @@ n_x=200                     #Resolution of x-axis
 int_test=[0.1, 0.9]         #Interval [a,b] on which the L^1-error is computed
 len_test=int_test[1]-int_test[0]
 test_points=np.array([int_test[0]+ i/(n_x)*len_test for i in range(n_x)])
-y_true=functions_nonlinear(np.ndarray((n_x,1), buffer=test_points), data_args["beta"][0])   #comute true underlying f(x)
+y_true=functions_nonlinear(np.ndarray((n_x,1), buffer=test_points), data_args["beta"][0])   #Compute true underlying f(x)
 
 
 # ----------------------------------
@@ -82,6 +76,6 @@ for i in range(len(noise_vars)):
 
     #Save the results using a pickle file
     res["DecoR"], res["ols"] = np.array(res["DecoR"]), np.array(res["ols"])
-    with open(path+"experiment_" + exp +'noise='+str(noise_vars[i])+'.pkl', 'wb') as fp:
+    with open(path_results+"experiment_" + exp +'_noise_='+str(noise_vars[i])+'.pkl', 'wb') as fp:
         pickle.dump(res, fp)
         print('Results saved successfully to file.')

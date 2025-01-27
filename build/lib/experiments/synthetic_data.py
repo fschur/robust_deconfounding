@@ -255,3 +255,149 @@ class BLPDataGenerator(BaseDataGenerator):
         y = x @ self.beta + ey + 10 * k
 
         return x, y
+    
+
+class UniformNonlinearDataGenerator(BaseDataGenerator):
+    """
+    Generates data with confounding concentrated in a specific frequency band.
+    The relation between x and y is assumued to be nonlinear and specified by the integer beta
+    """
+    def __init__(self, basis_type: str, beta: NDArray, noise_var: float):
+        super().__init__(basis_type, beta, noise_var)
+    
+    def get_noise_vars(self, n: int, sizes: list[int]) -> tuple[NDArray, NDArray, NDArray]:
+        """
+        Generates noise terms for the data with different variances.
+
+        Args:
+            n (int): Number of data points.
+            sizes (list[int]): Sizes of the noise arrays (for x, y, u).
+
+        Returns:
+            tuple[NDArray, NDArray, NDArray]: Noise arrays for x, y, u.
+        """
+
+        noise_u=np.random.uniform(0, 1, size=(n,1)) 
+        noise_x= np.random.uniform(0, 1, size=(n,1))
+        noise_y = np.random.normal(0, np.sqrt(self.noise_var), size=(n, 1))
+        noises=[noise_u, noise_x, noise_y]
+
+        return noises
+
+   
+    def generate_data(self, n: int, outlier_points: NDArray) -> tuple[NDArray, NDArray]:
+        """
+        Generates data from processes with x indepent, indentical unifrom distributed with confounding.
+
+        Args:
+            n (int): Number of data points.
+            outlier_points (NDArray): Indicator vector for outlier data points.
+
+        Returns:
+            tuple[NDArray, NDArray]: The generated data (x, y).
+        """ 
+        eu, ex, ey = self.get_noise_vars(n, [1, 1, 1])
+
+        basis = self.get_basis(n)
+
+        x=ex
+        k = self.basis_transform(6*x-3, outlier_points, basis, n)
+
+        y = functions_nonlinear(x, self.beta[0]) + ey + 10*k
+
+        return x[:,0], y[:,0], 10*k[:,0]
+  
+    
+class OUReflectedNonlinearDataGenerator(OUDataGenerator):
+    def __init__(self, basis_type: str, beta: NDArray, noise_var: float):
+        super().__init__(basis_type, beta, noise_var)
+
+    def generate_data(self, n: int, outlier_points: NDArray):
+        """
+        Generates data from discretized Ornstein-Uhlenbeck processes with confounding.
+
+        Args:
+            n (int): Number of data points.
+            outlier_points (NDArray): Indicator vector for outlier data points.
+
+        Returns:
+            tuple[NDArray, NDArray]: The generated data (x, y).
+        """
+        AR_object1, AR_object2 = self.get_ar(n)
+
+        eu, ex, ey = self.get_noise_vars(n, [1, 1, 1])
+
+        u = AR_object1.generate_sample(nsample=2 * n)[n:2 * n].reshape(-1, 1)
+        u = self.reflect(u)
+        
+        basis = self.get_basis(n)
+        k = self.basis_transform(6*u-3, outlier_points, basis, n)
+
+        x = u
+
+        y = functions_nonlinear(x, self.beta[0]) + ey + 10*k
+
+        return  x[:,0], y[:,0], 10*k[:,0]
+    
+    def reflect(self, x:NDArray)->NDArray:
+        """
+        Args:
+            x (NDArray): Process to reflect
+        Returns: 
+            Reflected the proccess x on the boundaries 0, 1.
+        """
+
+        n=len(x)
+        for i in range(0,n):
+            if x[i]>1:
+                x[i:n]=np.concatenate((np.array([(2-x[i])%1]), 2-x[(i+1):n]))
+            elif x[i]<0:
+                x[i:n]=np.concatenate((np.array([-x[i]%1]), -x[(i+1):n]))
+        return x
+
+    def get_ar(self, n: int) -> tuple[ArmaProcess, ArmaProcess]:
+        """
+        Generates two discretized Ornstein-Uhlenbeck processes. Note that discretized Ornstein-Uhlenbeck processes are
+        AR processes.
+
+        Args:
+            n (int): Number of data points.
+
+        Returns:
+            tuple[ArmaProcess, ArmaProcess]: Two AR models representing the processes.
+       
+        """
+        ar1 = np.array([1, -0.5/n])
+        ma1=np.array([75/(np.sqrt(n))])
+        AR_object1 = ArmaProcess(ar1, ma1)
+
+        ar2 = np.array([1, -0.1])
+        ma2 = np.array([1/3])
+        AR_object2 = ArmaProcess(ar2, ma2)
+
+        return AR_object1, AR_object2
+    
+
+def functions_nonlinear(x:NDArray, beta:int):
+    """"
+    Returns the value of different nonlinear functions evaluated at x where the type can be choosen over the integer beta.
+    1: Quadratic
+    2: Sinfunction
+    3: Sigmoid
+    4: Finite expansion in function basis
+    5: Linear
+    """
+  
+    if beta==1:
+        y = 5*x**2 
+    elif beta==2:
+        y = 6*np.sin(2*np.pi*x)
+    elif beta==3:
+        y=20/(1+np.exp(-16*x+6))-10
+    elif beta==4:
+        y=-1+np.cos(np.pi*x)-3*np.cos(2*np.pi*x)
+    elif beta==5:
+        y=3*x
+    else:
+        raise ValueError("Function not implemented.")
+    return y

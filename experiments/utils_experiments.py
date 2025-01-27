@@ -43,7 +43,7 @@ def r_squared(x: NDArray, y_true: NDArray, beta: NDArray) -> float:
     return 1-u/v
 
 
-def get_results(x: NDArray, y: NDArray, basis: NDArray, a: float, method: str, nonlinear: False, L: int|NDArray = 6, basis_type="cosine_cont" ) -> NDArray:
+def get_results(x: NDArray, y: NDArray, basis: NDArray, a: float, method: str, nonlinear=False, L: int|NDArray = 6, basis_type="cosine_cont" ) -> NDArray:
     """
     Estimates the causal coefficient(s) using DecorR with 'method' as robust regression algorithm.
 

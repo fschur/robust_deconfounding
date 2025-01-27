@@ -7,8 +7,8 @@ import pylab
 
 from robust_deconfounding.robust_regression import Torrent, BFS
 from robust_deconfounding.decor import DecoR
-from robust_deconfounding.utils import cosine_basis, haarMatrix
-from synthetic_data import BLPDataGenerator, OUDataGenerator
+from robust_deconfounding.utils import cosine_basis, haarMatrix, get_funcbasis, get_funcbasis_multivariate
+from synthetic_data import BLPDataGenerator, OUDataGenerator, UniformNonlinearDataGenerator, OUReflectedNonlinearDataGenerator
 
 
 def plot_settings():
@@ -43,7 +43,7 @@ def r_squared(x: NDArray, y_true: NDArray, beta: NDArray) -> float:
     return 1-u/v
 
 
-def get_results(x: NDArray, y: NDArray, basis: NDArray, a: float, method: str) -> NDArray:
+def get_results(x: NDArray, y: NDArray, basis: NDArray, a: float, method: str, nonlinear: False, L: int|NDArray = 6, basis_type="cosine_cont" ) -> NDArray:
     """
     Estimates the causal coefficient(s) using DecorR with 'method' as robust regression algorithm.
 
@@ -60,6 +60,16 @@ def get_results(x: NDArray, y: NDArray, basis: NDArray, a: float, method: str) -
     Raises:
         ValueError: If an invalid method is specified.
     """
+
+    if nonlinear:
+        if method!="torrent":
+            raise Exception("Use Torrent for the nonlinear extensions of DecoR, BFS is not suitable for higher-dimensional problems.")
+        
+        if isinstance(L, (int, np.int64)):
+            x=get_funcbasis(x=x, L=L, type=basis_type)
+        else:
+            x=get_funcbasis_multivariate(x=x, L=L, type=basis_type)
+
     if method == "torrent" or method == "bfs":
         if method == "torrent":
             algo = Torrent(a=a, fit_intercept=False)
@@ -70,7 +80,7 @@ def get_results(x: NDArray, y: NDArray, basis: NDArray, a: float, method: str) -
         algon.fit(x, y)
 
         return algon.estimate
-
+   
     elif method == "ols":
         model_l = sm.OLS(y, x).fit()
         return model_l.params
@@ -103,6 +113,10 @@ def get_data(n: int, process_type: str, basis_type: str, fraction: float, beta: 
         generator = OUDataGenerator(basis_type=basis_type, beta=beta, noise_var=noise_var)
     elif process_type == "blp":
         generator = BLPDataGenerator(basis_type=basis_type, beta=beta, noise_var=noise_var, band=band)
+    elif process_type=="uniform":
+        generator =  UniformNonlinearDataGenerator(basis_type=basis_type, beta=beta, noise_var=noise_var)
+    elif process_type=="ourre":
+        generator= OUReflectedNonlinearDataGenerator(basis_type=basis_type, beta=beta, noise_var=noise_var, )
     else:
         raise ValueError("process_type not implemented")
 

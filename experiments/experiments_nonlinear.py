@@ -28,9 +28,9 @@ np.random.seed(SEED)
 random.seed(SEED)
 
 path_results=os.path.join(os.path.dirname(__file__), "results/")        #Path to the results
-path_config = os.path.join(os.path.dirname(__file__), "config.json")    #Path for the json file where experiment configurations are defined.
+path= os.path.dirname(__file__)   #Path for the json file where experiment configurations are defined.
 
-with open(path_config+'config.json', 'r') as file:
+with open(path+'/config.json', 'r') as file:
     config = json.load(file)
 
 config=config["experiment_"+str(exp)]
@@ -62,10 +62,8 @@ for i in range(len(noise_vars)):
 
         for _ in range(m):
             data_values = get_data(n, **data_args, noise_var=noise_vars[i])
-            data_values.pop('u') 
-            outlier_points=data_values.pop('outlier_points')
-            estimates_decor = get_results(**data_values, **method_args, L=L)
-            y_est=basis @ estimates_decor["estimate"]
+            estimates_decor = get_results(**data_values, **method_args, nonlinear=True, L=L)
+            y_est=basis @ estimates_decor
             y_est=np.ndarray((n_x, 1), buffer=y_est)
 
             gam = LinearGAM(s(0)).gridsearch(np.reshape(data_values["x"], (-1,1)), data_values["y"])
