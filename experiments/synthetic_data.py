@@ -261,8 +261,6 @@ class UniformNonlinearDataGenerator(BaseDataGenerator):
     """
     Generates data with confounding concentrated in a specific frequency band.
     The relation between x and y is assumued to be nonlinear and specified by the integer beta
-    Attributes:
-        band (list[int]): Frequency band for concentrated confounding (inclusive).
     """
     def __init__(self, basis_type: str, beta: NDArray, noise_var: float):
         super().__init__(basis_type, beta, noise_var)
@@ -343,9 +341,10 @@ class OUReflectedNonlinearDataGenerator(OUDataGenerator):
     
     def reflect(self, x:NDArray)->NDArray:
         """
-        Reflects the proccess x on the boundaries 0, 1.
         Args:
             x (NDArray): Process to reflect
+        Returns: 
+            Reflected the proccess x on the boundaries 0, 1.
         """
 
         n=len(x)
