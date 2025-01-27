@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 
 from robust_deconfounding.utils import cosine_basis, get_funcbasis, get_funcbasis_multivariate
-from utils_experiments import get_results, plot_settings, get_conf, conf_help
+from utils_experiments import get_results, plot_settings, conf_help
 
 """
     We apply the nonlinear extension of DecoR to the ozon dataset.

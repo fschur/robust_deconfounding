@@ -165,11 +165,11 @@ def plot_results(res: dict, num_data: list, m: int, colors) -> None:
                  palette=[colors[0], colors[1]], legend=True)
 
 
-def get_conf(x:NDArray, estimate:NDArray, inliers: list, transformed: NDArray, alpha=0.95, lmbd=0, K=np.diag(np.array([0])), L=0, basis_type="cosine_cont") -> NDArray:
+def get_conf(x:NDArray, estimate:NDArray, inliers: list, transformed: NDArray, alpha=0.95, L=0, basis_type="cosine_cont") -> NDArray:
     """
         Returns a confidence interval for the estimated f evaluated at x.
         Caution: We use all points to estimate the variance (not only the inliers) to avoid a underestimation and 
-                to countersteer the fact we only get an interval for \hat{f}
+                to countersteer the fact we only get an interval for \hat{f}. The returned estimation is not a valid confidence interval
         Arguements:
             x: Points where confidence interval should be evaluated
             estimate: estimated coefficients
@@ -200,7 +200,7 @@ def get_conf(x:NDArray, estimate:NDArray, inliers: list, transformed: NDArray, a
     #Compute the linear estimator
     xn=xn[list(inliers)]
     yn=yn[list(inliers)]
-    H_help=np.linalg.solve(xn.T @ xn + lmbd*K, xn.T)
+    H_help=np.linalg.solve(xn.T @ xn, xn.T)
     H=basis @ H_help
     sigma=np.sqrt(sigma_2 * np.diag(H @ H.T))
 
@@ -213,11 +213,11 @@ def get_conf(x:NDArray, estimate:NDArray, inliers: list, transformed: NDArray, a
     return ci
 
 
-def conf_help(estimate:NDArray, inliers: list, transformed: NDArray, alpha=0.95, lmbd=0, K=np.diag(np.array([0])), L=0)->dict:
+def conf_help(estimate:NDArray, inliers: list, transformed: NDArray, alpha=0.95, L=0)->dict:
     """
-        Returns a estimation of the variance sigma and
+        Returns a estimation of the variance sigma, the hat matrix H and quantile q
         Caution: We use all points to estimate the variance (not only the inliers) to avoid a underestimation and 
-                to countersteer the fact we only get an interval for \hat{f}
+                to countersteer the fact we only get an interval for \hat{f}.
         Arguements:
             x: Points where confidence interval should be evaluated
             estimate: estimated coefficients
@@ -248,6 +248,6 @@ def conf_help(estimate:NDArray, inliers: list, transformed: NDArray, alpha=0.95,
     #Compute results
     qt=sp.stats.t.ppf((1-alpha)/2, df)
     sigma=np.sqrt(np.sum(np.square(r), axis=0)/df)
-    H=np.linalg.solve(xn.T @ xn + lmbd*K, xn.T)
+    H=np.linalg.solve(xn.T @ xn, xn.T)
 
     return{'sigma': sigma, 'H':H , 'qt': qt}
