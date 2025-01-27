@@ -47,3 +47,8 @@ class DecoR:
     def estimate(self) -> NDArray:
         """Get the estimated coefficients from the regression model."""
         return self.algo.coef_
+    
+    @property
+    def get_transformed(self) -> NDArray:
+        """Get the transformed sample."""
+        return {"xn": self.xn, "yn": self.yn}
