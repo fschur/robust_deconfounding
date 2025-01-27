@@ -2,7 +2,7 @@ import numpy as np
 import random, pickle, json, os
 from pygam import LinearGAM, s
 
-from utils_nonlinear import get_results, get_data
+from utils_experiments import get_results, get_data
 from synthetic_data import functions_nonlinear
 from robust_deconfounding.utils import get_funcbasis
 
@@ -27,8 +27,8 @@ SEED = 1
 np.random.seed(SEED)
 random.seed(SEED)
 
-path_results=os.path.join(os.path.dirname(__file__), "results/") #Path to save files
-path_config = os.path.join(os.path.dirname(__file__), "config.json")#Path for the json file where experiment configurations are defined.
+path_results=os.path.join(os.path.dirname(__file__), "results/")        #Path to the results
+path_config = os.path.join(os.path.dirname(__file__), "config.json")    #Path for the json file where experiment configurations are defined.
 
 with open(path_config+'config.json', 'r') as file:
     config = json.load(file)
@@ -41,7 +41,7 @@ n_x=200                     #Resolution of x-axis
 int_test=[0.1, 0.9]         #Interval [a,b] on which the L^1-error is computed
 len_test=int_test[1]-int_test[0]
 test_points=np.array([int_test[0]+ i/(n_x)*len_test for i in range(n_x)])
-y_true=functions_nonlinear(np.ndarray((n_x,1), buffer=test_points), data_args["beta"][0])   #comute true underlying f(x)
+y_true=functions_nonlinear(np.ndarray((n_x,1), buffer=test_points), data_args["beta"][0])   #Compute true underlying f(x)
 
 
 # ----------------------------------
@@ -76,6 +76,6 @@ for i in range(len(noise_vars)):
 
     #Save the results using a pickle file
     res["DecoR"], res["ols"] = np.array(res["DecoR"]), np.array(res["ols"])
-    with open(path_results+"experiment_" + exp +'noise='+str(noise_vars[i])+'.pkl', 'wb') as fp:
+    with open(path_results+"experiment_" + exp +'_noise_='+str(noise_vars[i])+'.pkl', 'wb') as fp:
         pickle.dump(res, fp)
         print('Results saved successfully to file.')
