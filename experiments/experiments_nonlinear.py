@@ -18,10 +18,11 @@ Short explanation of the variables and what they do:
 "reflected_ou" : X_t is a reflected Ornstein-Uhlenbeck process
 """
 
-exp="reflected_ou"     # "uniform" | "reflected_ou"
+exp="sigmoid"     # "uniform" | "reflected_ou" | "sigmoid"
+
 
 # ----------------------------------
-# Set up and pepare Monte Carlo simluation
+# Set up and prepare Monte Carlo simulation
 # ----------------------------------
 
 SEED = 1

@@ -73,7 +73,7 @@ def get_funcbasis(x:NDArray, L:int, type="cosine_cont", intercept=True)->NDArray
         x: points where the basis vectors are evluated
         type: type of basis spanning the L^2-space "cosine_cont" | "cosine_disc" | "poly"
     Returns: 
-        matrix of the basis evaluated at x
+        matrix of the first L basis functions evaluated at x
     """
 
     L_0=(0 if intercept else 1)
@@ -91,20 +91,20 @@ def get_funcbasis(x:NDArray, L:int, type="cosine_cont", intercept=True)->NDArray
         tmp=[x**k for k in range(L_0, L+1)]
         basis= np.vstack(tmp).T
     else:
-        raise ValueError("Invalid basis type")
+        raise ValueError("Invalid basis type.")
     
     return basis
 
 
 def get_funcbasis_multivariate(x:NDArray, L:NDArray, type="cosine_cont")->NDArray:
     """
-    Multivariate version of get_funcbasis, returns the first L basis vectors evaluated at x_1, x_2, ....
+    Multivariate version of get_funcbasis, returns the first L basis vectors evaluated at x=(x_1, x_2, ...)
     Arguments:
         L: NDArray of number of basis vectors
         x: points where the basis vectors are evluated
         type: type of basis spanning the L^2-space "cosine_cont" | "cosine_disc" | "poly"
     Returns: 
-        matrix of the basis evaluated at x
+        matrix of the first L basis functions evaluated at x
     """
 
     if len(L)!=x.shape[0]:

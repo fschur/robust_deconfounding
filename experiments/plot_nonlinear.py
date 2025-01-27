@@ -9,7 +9,7 @@ We plot the results, i.e. L^1-error, obtained from experiments_nonlinear.py
 The experiment can be selected by the variable "exp".
 """
 
-exp="reflected_ou"     # "uniform" | "reflected_ou"
+exp="sigmoid"     # "uniform" | "reflected_ou"
 
 # ----------------------------------
 # Load the plot setting and experiment configurations
@@ -42,7 +42,7 @@ for i in range(len(noise_vars)):
 # Set labels, legend and title
 # ----------------------------------
 
-titles = {"uniform": "Uniform", "reflected_ou": "Reflected OU"}
+titles = {"uniform": "Nonlinear (Uniform)", "reflected_ou": "Nonlinear (Reflected OU)", "sigmoid": "Sigmoid function"}
 
 def get_handles():
     point_1 = Line2D([0], [0], label='GAM', marker='o',
@@ -59,10 +59,10 @@ def get_handles():
 
 plt.ylabel("$L^1$-error")
 plt.xlabel("number of data points")
-plt.title("Nonlinear (" + titles[exp] + ")") 
+plt.title(titles[exp]) 
 plt.xscale('log')
 plt.xlim(left=num_data[0] - 2)
-plt.legend(handles=get_handles(), loc="upper right")
+plt.legend(handles=get_handles(), loc="center right")
 plt.tight_layout()
 
 plt.show()
