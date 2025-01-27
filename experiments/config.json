@@ -5,29 +5,7 @@
             "basis_type": "cosine",    
             "fraction": 0.25,           
             "beta": [2],     
-            "band": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ,35 ,36, 37, 38, 39, 40, 41,42, 43, 44, 45, 46, 47, 48, 49 ]
-        },
-        
-        "method_args" : {
-            "a": 0.7,
-            "method": "torrent",       
-            "basis_type":"cosine_cont"
-        },
-        
-        "m" : 10 ,  
-        "noise_vars" : [0, 1, 4] ,
-        "L_frac" : [1, 2, 5] ,
-        "num_data" : [12, 32, 64, 128, 256, 1024, 8192]  
-    },
-
-    "experiment_2": {
-        "data_args": {
-            "process_type": "ourre",   
-            "basis_type": "cosine",    
-            "fraction": 0.25,           
-            "beta": [2],     
-            "band": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ,35 ,36, 37, 38, 39, 40, 41,42, 43, 44, 45, 46, 47, 48, 49 ],
-            "noise_type": "normal"
+            "band": [0]
         },
         
         "method_args" : {
@@ -42,36 +20,13 @@
         "num_data" : [12, 32, 64, 128, 256, 1024, 8192]  
     },
 
-    "experiment_3": {
-        "data_args": {
-            "process_type": "uniform",   
-            "basis_type": "cosine",    
-            "fraction": 0.25,           
-            "beta": [2],     
-            "band": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ,35 ,36, 37, 38, 39, 40, 41,42, 43, 44, 45, 46, 47, 48, 49 ],
-            "noise_type": "normal"
-        },
-        
-        "method_args" : {
-            "a": 0.7,
-            "method": "torrent",       
-            "basis_type":"cosine_cont"
-        },
-        
-        "m" : 200 ,  
-        "noise_vars" : [0, 1, 4] ,
-        "L_frac" : [1, 2, 5] ,
-        "num_data" : [32, 64, 128, 256, 1024, 8192]  
-    },
-
-    "experiment_4": {
+    "experiment_reflected_ou": {
         "data_args": {
             "process_type": "ourre",   
             "basis_type": "cosine",    
             "fraction": 0.25,           
             "beta": [2],     
-            "band": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ,35 ,36, 37, 38, 39, 40, 41,42, 43, 44, 45, 46, 47, 48, 49 ],
-            "noise_type": "normal"
+            "band": [0]
         },
         
         "method_args" : {
@@ -83,52 +38,6 @@
         "m" : 200 ,  
         "noise_vars" : [0, 1, 4] ,
         "L_frac" : [1, 2, 5] ,
-        "num_data" : [32, 64, 128, 256, 1024, 8192]  
-    },
-
-
-    "experiment_5": {
-        "data_args": {
-            "process_type": "ourre",   
-            "basis_type": "cosine",    
-            "fraction": 0.25,           
-            "beta": [3],     
-            "band": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ,35 ,36, 37, 38, 39, 40, 41,42, 43, 44, 45, 46, 47, 48, 49 ],
-            "noise_type": "normal"
-        },
-        
-        "method_args" : {
-            "a": 0.7,
-            "method": "torrent",       
-            "basis_type":"cosine_cont"
-        },
-        
-        "m" : 200 ,  
-        "noise_vars" : [0, 1, 4] ,
-        "L_frac" : [1, 2, 5] ,
-        "num_data" : [32, 64, 128, 256, 1024, 8192]  
-    },
-
-
-    "experiment_6": {
-        "data_args": {
-            "process_type": "uniform",   
-            "basis_type": "cosine",    
-            "fraction": 0.25,           
-            "beta": [3],     
-            "band": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ,35 ,36, 37, 38, 39, 40, 41,42, 43, 44, 45, 46, 47, 48, 49 ],
-            "noise_type": "normal"
-        },
-        
-        "method_args" : {
-            "a": 0.7,
-            "method": "torrent",       
-            "basis_type":"cosine_cont"
-        },
-        
-        "m" : 200 ,  
-        "noise_vars" : [0, 1, 4] ,
-        "L_frac" : [1, 2, 5] ,
-        "num_data" : [32, 64, 128, 256, 1024, 8192]  
+        "num_data" : [12, 32, 64, 128, 256, 1024, 8192]  
     }
 }
