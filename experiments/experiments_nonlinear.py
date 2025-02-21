@@ -40,7 +40,7 @@ data_args, method_args, m, noise_vars, L_frac, num_data= config["data_args"], co
 data_args["beta"]=np.array(data_args["beta"])        
 
 n_x=200                     #Resolution of x-axis
-int_test=[0, 1]         #Interval [a,b] on which the L^1-error is computed
+int_test=[0, 1]             #Interval [a,b] on which the L^1-error is computed
 len_test=int_test[1]-int_test[0]
 test_points=np.array([int_test[0]+ i/(n_x)*len_test for i in range(n_x)])
 y_true=functions_nonlinear(np.ndarray((n_x,1), buffer=test_points), data_args["beta"][0])   #Compute true underlying f(x)

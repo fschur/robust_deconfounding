@@ -2,6 +2,7 @@ import os
 from pygam import GAM, s, intercept
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 
@@ -39,7 +40,7 @@ date=np.array(df.loc[:, "date"])
 # Plot the two time series against the time
 # ----------------------------------
 
-fig, axs = plt.subplots(2, 1)
+fig, axs = plt.subplots(2, 1, figsize=(8, 5))
 
 #Plotting
 axs[0].plot(date, x,'o', marker='.', color="black", markersize=3)
@@ -136,6 +137,8 @@ y_ref=np.exp(0.0007454149*test_ozone)*np.mean(y)
 y_ref_l=np.exp(0.00042087681*test_ozone)*np.mean(y)
 y_ref_u=np.exp(0.0010698931*test_ozone)*np.mean(y)
 
+plt.figure(figsize=(5,5))
+
 #Plot the difference estimations
 plt.scatter(x=x, y=y, color='w', edgecolors="gray", s=4) 
 plt.plot(test_ozone, y_bench, '-', color=ibm_cb[4], linewidth=1.5)
@@ -171,10 +174,12 @@ plt.show()
 inl=estimates_decor["inliers"]                  #Indicies of the basis functions keept by DecoR
 out=np.delete(np.arange(0,n), list(inl))        #Estimated outliers by DecoR
 freq_rem=(out+0.5)/(2*n*24*3600)*10**6          #Convert to mikrohertz
-plt.hist(freq_rem,  color=ibm_cb[0], edgecolor='k', alpha=0.6, bins=15)
-plt.xlabel("Frequency ($\mu Hz$)")
-plt.ylabel("Count")
-plt.title("Histogramm of Excluded Frequencies")
+
+plt.figure(figsize=(5,5))
+fn = sns.histplot(freq_rem, color=ibm_cb[0], bins=15)
+fn.set(title="Histogramm of Excluded Frequencies")
+fn.set(xlabel="Frequency ($\mu Hz$)")
+fn.set(ylabel="Count")
 plt.tight_layout()
 plt.show()
 
