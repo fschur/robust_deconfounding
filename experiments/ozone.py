@@ -158,9 +158,9 @@ def get_handles():
     return [point_1,  point_2, point_3, point_4]
 
 #Labeling
-plt.xlabel("average Ozone levels ($\mu g/m^3$)")
+plt.xlabel("Average Daily Ozone Levels ($\mu g/m^3$)")
 plt.ylabel("# Deaths")
-plt.title("Influence of Ozone on Health")
+plt.title("Daily Ozone Levels and Mortality")
 plt.legend(handles=get_handles(), loc="upper left")
 plt.grid(linestyle='dotted')
 plt.tight_layout()
