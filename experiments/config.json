@@ -1,0 +1,64 @@
+{
+    "experiment_uniform": {
+        "data_args": {
+            "process_type": "uniform",   
+            "basis_type": "cosine",    
+            "fraction": 0.25,           
+            "beta": [2],     
+            "band": [0]
+        },
+        
+        "method_args" : {
+            "a": 0.7,
+            "method": "torrent",       
+            "basis_type":"cosine_cont"
+        },
+        
+        "m" : 200 ,  
+        "noise_vars" : [0, 1, 4] ,
+        "L_frac" : [1, 2, 5] ,
+        "num_data" : [12, 32, 64, 128, 256, 1024, 8192]  
+    },
+
+    "experiment_reflected_ou": {
+        "data_args": {
+            "process_type": "ourre",   
+            "basis_type": "cosine",    
+            "fraction": 0.25,           
+            "beta": [2],     
+            "band": [0]
+        },
+        
+        "method_args" : {
+            "a": 0.7,
+            "method": "torrent",       
+            "basis_type":"cosine_cont"
+        },
+        
+        "m" : 200 ,  
+        "noise_vars" : [0, 1, 4] ,
+        "L_frac" : [1, 2, 5] ,
+        "num_data" : [12, 32, 64, 128, 256, 1024, 8192]  
+    },
+
+    "experiment_sigmoid": {
+        "data_args": {
+            "process_type": "uniform",   
+            "basis_type": "cosine",    
+            "fraction": 0.25,           
+            "beta": [3],     
+            "band": [0]
+        },
+        
+        "method_args" : {
+            "a": 0.7,
+            "method": "torrent",       
+            "basis_type":"cosine_cont"
+        },
+        
+        "m" : 200 ,  
+        "noise_vars" : [0, 1, 4] ,
+        "L_frac" : [1, 2, 5] ,
+        "num_data" : [12, 32, 64, 128, 256, 1024, 8192]  
+    }
+}

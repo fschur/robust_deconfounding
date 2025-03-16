@@ -63,3 +63,56 @@ def cosine_basis(n: int) -> NDArray:
     tmp = [np.cos(np.pi * sample_points * (k + 1 / 2)) for k in range(n)]
     basis = np.hstack((np.ones((n, 1)), np.sqrt(2) * np.vstack(tmp))).T
     return basis
+
+
+def get_funcbasis(x:NDArray, L:int, type="cosine_cont", intercept=True)->NDArray:
+    """
+    Returns the first L basis vectors evaluated at x. 
+    Arguments:
+        L: number of basis vectors
+        x: points where the basis vectors are evluated
+        type: type of basis spanning the L^2-space "cosine_cont" | "cosine_disc" | "poly"
+    Returns: 
+        matrix of the first L basis functions evaluated at x
+    """
+
+    L_0=(0 if intercept else 1)
+   
+    if type=="cosine_cont":
+        tmp = [np.cos(np.pi * x * k)  for k in range(L_0,L+1)] 
+        basis = np.vstack(tmp).T
+    elif type=="cosine_disc":
+        n=len(x)
+        tmp = [np.cos(np.pi * x * (k + 1/2)) for k in range(L_0, L+1)]
+        basis = np.vstack(tmp).T
+        ind_0=np.arange(0,n)[list(x)==0]
+        basis[ind_0, :]=1
+    elif type=="poly":
+        tmp=[x**k for k in range(L_0, L+1)]
+        basis= np.vstack(tmp).T
+    else:
+        raise ValueError("Invalid basis type.")
+    
+    return basis
+
+
+def get_funcbasis_multivariate(x:NDArray, L:NDArray, type="cosine_cont")->NDArray:
+    """
+    Multivariate version of get_funcbasis, returns the first L basis vectors evaluated at x=(x_1, x_2, ...)
+    Arguments:
+        L: NDArray of number of basis vectors
+        x: points where the basis vectors are evluated
+        type: type of basis spanning the L^2-space "cosine_cont" | "cosine_disc" | "poly"
+    Returns: 
+        matrix of the first L basis functions evaluated at x
+    """
+
+    if len(L)!=x.shape[0]:
+        raise ValueError("Dimensions of L and x don't coincide.")
+    
+    basis=get_funcbasis(x=x[0, :], L=L[0], type=type, intercept=True)
+    for i in range(1,len(L)):
+        basis_add=get_funcbasis(x=x[i, :], L=L[i], type=type, intercept=False)
+        basis=np.concatenate((basis,basis_add), axis=1)
+
+    return basis
