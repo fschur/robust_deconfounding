@@ -7,6 +7,11 @@ from matplotlib.lines import Line2D
 from utils_experiments import  plot_results,  plot_settings
 
 """
+    This code produces Figures 11.
+    Figure 11a is given when 'exp="uniform"' and Figure 11b when 'exp="reflected_ou"'. 
+"""
+
+"""
 We plot the results, i.e. L^1-error, obtained from experiments_nonlinear.py
 The experiment can be selected by the variable "exp".
 """

@@ -12,6 +12,10 @@ from robust_deconfounding.utils import cosine_basis, get_funcbasis, get_funcbasi
 from utils_experiments import plot_settings, conf_help
 
 """
+    This code produces Figures 5a, 5b, and 12.
+"""
+
+"""
     We apply the nonlinear extension of DecoR to the ozon dataset to estimate the influence of the daily ozone level (X_t) onto the number of deaths (Y_t).
     For this, we use a delay of the effect of one day and include as a second covariate the daily mean temperature to adjust for heatwaves. The effects
     are asumed to be additive. We compare it with the estimation from:

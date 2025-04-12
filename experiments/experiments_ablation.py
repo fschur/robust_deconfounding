@@ -5,6 +5,10 @@ from matplotlib.lines import Line2D
 
 from utils_experiments import get_results, plot_results, get_data, plot_settings
 
+"""
+    Figure 8a.
+"""
+
 
 colors, ibm_cb = plot_settings()
 

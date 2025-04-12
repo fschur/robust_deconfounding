@@ -6,6 +6,16 @@ from matplotlib.lines import Line2D
 from utils_experiments import get_results, plot_results, get_data, plot_settings
 
 """
+    Figure 3 and Figure 7 and Table 1.
+    Figure 3 (left): Set '"process_type": "blp"'
+    Figure 3 (right): Set "process_type": "ou". 
+    Figure 7: Set "process_type": "ou" and "basis_type": "haar".
+    Table 1: Set 'noise_vars = [0, 1]',  'num_data =[8, 12, 16]' and method to "bfs" and "tor" 
+    (i.e. run the experiment twice one with bfs and once with tor).
+"""
+
+
+"""
 Short explanation of the variables and what they do:
 
 Data generation:
@@ -35,7 +45,7 @@ np.random.seed(SEED)
 random.seed(SEED)
 
 data_args = {
-    "process_type": "blp",       # "ou" | "blp
+    "process_type": "blp",      # "ou" | "blp
     "basis_type": "cosine",     # "cosine" | "haar"
     "fraction": 0.25,
     "beta": np.array([[3.]]),
@@ -48,8 +58,8 @@ method_args = {
 }
 
 m = 1000
-noise_vars = [0, 1, 4]
-num_data = [4 * 2 ** k for k in range(0, 5)] + [1024]       # [4, 8, 10]
+noise_vars = [0, 1, 4]                                      # [0, 1, 4] | [0, 1]
+num_data = [4 * 2 ** k for k in range(0, 5)] + [1024]       # [4 * 2 ** k for k in range(0, 5)] + [1024] | [8, 12, 16]
 
 # ----------------------------------
 # run experiments
@@ -70,6 +80,10 @@ for i in range(len(noise_vars)):
 
             estimates_ols = get_results(**data_values, method="ols", a=method_args["a"])
             res["ols"][-1].append(np.linalg.norm(estimates_ols - data_args["beta"].T, ord=1))
+
+        # print mean and std of the results
+        print(f"DecoR: mean: {np.mean(res['DecoR'][-1]):.2f}, std_mean: {np.std(res['DecoR'][-1]) / np.sqrt(n):.2f}")
+        print(f"OLS: mean: {np.mean(res['ols'][-1]):.2f}, std_mean: {np.std(res['ols'][-1]) / np.sqrt(n):.2f}")
 
     res["DecoR"], res["ols"] = np.array(res["DecoR"]), np.array(res["ols"])
 
@@ -93,10 +107,12 @@ def get_handles():
                      color=ibm_cb[1], linestyle='-')
     point_4 = Line2D([0], [0], label="$\sigma_{\eta}^2 = $" + str(noise_vars[1]), markersize=10,
                      color=ibm_cb[4], linestyle='-')
-    point_5 = Line2D([0], [0], label="$\sigma_{\eta}^2 = $" + str(noise_vars[2]), markersize=10,
-                     color=ibm_cb[2], linestyle='-')
+    if len(noise_vars) == 3:
+        point_5 = Line2D([0], [0], label="$\sigma_{\eta}^2 = $" + str(noise_vars[2]), markersize=10,
+                         color=ibm_cb[2], linestyle='-')
 
-    return [point_1, point_2, point_3, point_4, point_5]
+        return [point_1, point_2, point_3, point_4, point_5]
+    return [point_1, point_2, point_3, point_4]
 
 
 plt.xlabel("number of data points")

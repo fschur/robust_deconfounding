@@ -12,6 +12,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
+"""
+    Figure 4.
+"""
+
 # Control the number of threads used by numpy and underlying libraries
 os.environ['OMP_NUM_THREADS'] = '1'
 os.environ['OPENBLAS_NUM_THREADS'] = '1'
